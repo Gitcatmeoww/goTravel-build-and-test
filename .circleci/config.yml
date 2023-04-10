@@ -37,6 +37,13 @@ jobs:
           name: Install dependencies
           command: pip3 install requests flask
       - run:
+          name: Start flask server
+          command: python3 app.py
+          background: true
+      - run:
+          name: Wait for flask server to start
+          command: sleep 2
+      - run:
           name: Run tests
           # This assumes pytest is installed via the install-package step above
           command: python3 tests.py
