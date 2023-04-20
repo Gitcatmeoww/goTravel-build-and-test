@@ -34,7 +34,7 @@ class Wishlist(db.Model):
     weather_forecast = db.Column(db.String(200))
     recommendation = db.Column(db.String(200))
 
-    def __init__(self, destination, planned_date, weather_forecast, recommendation):
+    def __init__(self, destination, planned_date, weather_forecast=None, recommendation=None):
         self.destination = destination
         self.planned_date = planned_date
         self.weather_forecast = weather_forecast

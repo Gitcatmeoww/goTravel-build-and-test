@@ -16,7 +16,8 @@ class TestGoTravel(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls) -> None:
-        db.drop_all()
+        with app.app_context():
+            db.drop_all()
 
     # Wishlist database should be created properly
     def test_database_setup(self):
@@ -34,7 +35,7 @@ class TestGoTravel(unittest.TestCase):
     def test_get_recommend(self):
         response = self.client.get('/recommend')
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(json.loads(response.content.decode()), {
+        self.assertEqual(json.loads(response.data.decode()), {
             "status": "success", "response": "test recommend"})
 
 
