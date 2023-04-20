@@ -25,7 +25,9 @@ jobs:
 
       - run:
           name: Set up database
-          command: flask create-db
+          command: |
+            . venv/bin/activate
+            flask create-db
 
       - run:
           name: Wait for postgres to be ready
