@@ -1,5 +1,6 @@
 import unittest
 import json
+import datetime
 from app import app, db, Wishlist
 
 
@@ -23,14 +24,15 @@ class TestGoTravel(unittest.TestCase):
     def test_database_setup(self):
         with app.app_context():
             test_record_add = Wishlist(
-                destination="berkeley", planned_date="04/18/2023")
+                destination="berkeley", planned_date=datetime.date(2023, 4, 18))
             db.session.add(test_record_add)
             db.session.commit()
 
             test_record_get = Wishlist.query.filter_by(
                 destination="berkeley").first()
             self.assertEqual(test_record_get.destination, "berkeley")
-            self.assertEqual(test_record_get.planned_date, "04/18/2023")
+            self.assertEqual(test_record_get.planned_date,
+                             datetime.date(2023, 4, 18))
 
     # Recommend endpoint should return {"status": "success", "response": "test recommend"} with a status code 200
     def test_get_recommend(self):
