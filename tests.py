@@ -21,15 +21,16 @@ class TestGoTravel(unittest.TestCase):
 
     # Wishlist database should be created properly
     def test_database_setup(self):
-        test_record_add = Wishlist(
-            destination="berkeley", planned_date="04/18/2023")
-        db.session.add(test_record_add)
-        db.session.commit()
+        with app.app_context():
+            test_record_add = Wishlist(
+                destination="berkeley", planned_date="04/18/2023")
+            db.session.add(test_record_add)
+            db.session.commit()
 
-        test_record_get = Wishlist.query.filter_by(
-            destination="berkeley").first()
-        self.assertEqual(test_record_get.destination, "berkeley")
-        self.assertEqual(test_record_get.planned_date, "04/18/2023")
+            test_record_get = Wishlist.query.filter_by(
+                destination="berkeley").first()
+            self.assertEqual(test_record_get.destination, "berkeley")
+            self.assertEqual(test_record_get.planned_date, "04/18/2023")
 
     # Recommend endpoint should return {"status": "success", "response": "test recommend"} with a status code 200
     def test_get_recommend(self):
