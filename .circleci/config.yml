@@ -35,7 +35,9 @@ jobs:
 
       - run:
           name: Start flask server
-          command: python3 app.py
+          command: |
+            . venv/bin/activate
+            python3 app.py
           background: true
 
       - run:

@@ -10,7 +10,9 @@ class TestGoTravel(unittest.TestCase):
         app.config['TESTING'] = True
         app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:postgres@localhost/datawarehouse_test'
         cls.client = app.test_client()
-        db.create_all()
+
+        with app.app_context():
+            db.create_all()
 
     @classmethod
     def tearDownClass(cls) -> None:
