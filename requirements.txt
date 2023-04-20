@@ -1,0 +1,6 @@
+flask
+requests
+Flask-SQLAlchemy
+sqlalchemy_utils
+postgres
+psycopg2==2.9.3
