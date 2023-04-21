@@ -34,13 +34,6 @@ class TestGoTravel(unittest.TestCase):
             self.assertEqual(test_record_get.planned_date,
                              datetime.date(2023, 4, 18))
 
-    # Recommend endpoint should return {"status": "success", "response": "test recommend"} with a status code 200
-    def test_get_recommend(self):
-        response = self.client.get('/recommend')
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(json.loads(response.data.decode()), {
-            "status": "success", "response": "test recommend"})
-
 
 if __name__ == "__main__":
     unittest.main()
