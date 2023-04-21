@@ -38,8 +38,7 @@ class TestGoTravel(unittest.TestCase):
     def test_get_all_wishlist_no_record(self):
         response = self.client.get('/wishlist')
         self.assertEqual(response.status_code, 204)
-        self.assertEqual(json.loads(response.data.decode()), {
-            "Error: Wishlist not found!"})
+        self.assertEqual(json.loads(response.data.decode()), {[]})
 
 
 if __name__ == "__main__":
