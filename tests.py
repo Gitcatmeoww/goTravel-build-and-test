@@ -20,7 +20,7 @@ class TestGoTravel(unittest.TestCase):
         with app.app_context():
             db.drop_all()
 
-    # Wishlist database should be created properly
+    # Test #1: Wishlist database should be created properly
     def test_database_setup(self):
         with app.app_context():
             test_record_add = Wishlist(
@@ -33,6 +33,13 @@ class TestGoTravel(unittest.TestCase):
             self.assertEqual(test_record_get.destination, "berkeley")
             self.assertEqual(test_record_get.planned_date,
                              datetime.date(2023, 4, 18))
+
+    # Test #2: Get all wishlist should return error message with a status code 204 when there is no record in the database
+    def test_get_all_wishlist_no_record(self):
+        response = self.client.get('/wishlist')
+        self.assertEqual(response.status_code, 204)
+        self.assertEqual(json.loads(response.data.decode()), {
+            "Error: Wishlist not found!"})
 
 
 if __name__ == "__main__":

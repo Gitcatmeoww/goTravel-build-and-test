@@ -59,5 +59,58 @@ def create_db():
     db.create_all()
 
 
+# Handlers for wishlist endpoint
+def handle_get_all():
+    try:
+        wishlists = Wishlist.query.all()
+        if wishlists:
+            return jsonify([wishlist.to_dict() for wishlist in wishlists]), 200
+        else:
+            return jsonify("Error: Wishlist not found!"), 204
+    except Exception as e:
+        return jsonify(f"Error: Something went wrong when getting all wishlists - {str(e)}"), 400
+
+
+def handle_create_wishlist():
+    return
+
+
+def handle_get_single(destination):
+    return
+
+
+def handle_update_single(destination):
+    return
+
+
+def handle_delete_single(destination):
+    return
+
+
+@app.route('/wishlist', methods=['GET', 'POST'])
+@app.route('/wishlist/<destination>', methods=['GET', 'PUT', 'DELETE'])
+def wishlist(destination=None):
+    try:
+        if destination is None:
+            if request.method == "GET":  # Get all wishlist
+                return handle_get_all()
+            elif request.method == "POST":  # Create a new wishlist
+                return handle_create_wishlist()
+            else:
+                return jsonify("Error: Unsupported HTTP method"), 400
+        else:
+            destination = destination.lower()
+            if request.method == "GET":  # Get one single wishlist
+                return handle_get_single(destination)
+            elif request.method == "PUT":  # Update one single wishlist
+                return handle_update_single(destination)
+            elif request.method == "DELETE":  # Delete one single wishlist
+                return handle_delete_single(destination)
+            else:
+                return jsonify("Error: Unsupported HTTP method"), 400
+    except Exception as e:
+        return jsonify(f"Error: Something went wrong in the wishlist endpoint - {str(e)}"), 400
+
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5050, debug=True)
