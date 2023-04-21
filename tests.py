@@ -42,12 +42,11 @@ class TestGoTravel(unittest.TestCase):
             self.assertEqual(test_record_get.planned_date,
                              datetime.date(2023, 4, 18))
 
-    # Test #2: Get all wishlist should return error message with a status code 204 when there is no record in the database
+    # Test #2: Get all wishlist should return a empty list with a status code 200 when there is no record in the database
     def test_get_all_wishlist_no_record(self):
         response = self.client.get('/wishlist')
-        self.assertEqual(response.status_code, 204)
-        self.assertEqual(json.loads(response.data.decode()),
-                         {"Error: Wishlist not found!"})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json, [])
 
 
 if __name__ == "__main__":

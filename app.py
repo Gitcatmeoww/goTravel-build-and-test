@@ -63,10 +63,7 @@ def create_db():
 def handle_get_all():
     try:
         wishlists = Wishlist.query.all()
-        if wishlists:
-            return jsonify([wishlist.to_dict() for wishlist in wishlists]), 200
-        else:
-            return jsonify("Error: Wishlist not found!"), 204
+        return jsonify([wishlist.to_dict() for wishlist in wishlists]), 200
     except Exception as e:
         return jsonify(f"Error: Something went wrong when getting all wishlists - {str(e)}"), 400
 
