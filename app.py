@@ -99,7 +99,15 @@ def handle_create_wishlist():
 
 
 def handle_get_single(destination):
-    return
+    try:
+        wishlist = Wishlist.query.filter_by(
+            destination=destination).first()
+        if wishlist:
+            return jsonify(wishlist.to_dict()), 200
+        else:
+            return jsonify("Error: Wishlist not found!"), 204
+    except Exception as e:
+        return jsonify(f"Error: Something went wrong when getting a single wishlist - {str(e)}"), 400
 
 
 def handle_update_single(destination):
