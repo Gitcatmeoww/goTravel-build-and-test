@@ -55,6 +55,20 @@ class TestGoTravel(unittest.TestCase):
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.json, "Error: Invalid input")
 
+    # Test #4: Create a new (non-existing) wishlist should return a success message with a status code 201
+    def test_create_new_wishlist(self):
+        with app.app_context():
+            response = self.client.post(
+                '/wishlist', data=dict(destination="berkeley", planned_date=datetime.date(2023, 5, 1)))
+            self.assertEqual(response.status_code, 201)
+            self.assertEqual(response.json, "Success: New wishlist added!")
+
+            new_wishlist = Wishlist.query.filter_by(
+                destination="berkeley").first()
+            self.assertIsNotNone(new_wishlist)
+            self.assertEqual(new_wishlist.planned_date,
+                             datetime.date(2023, 5, 1))
+
 
 if __name__ == "__main__":
     unittest.main()

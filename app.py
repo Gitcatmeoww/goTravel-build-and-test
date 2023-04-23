@@ -76,6 +76,19 @@ def handle_create_wishlist():
         # Check the validity of user input
         if destination is None or destination == "" or planned_date is None or planned_date == "":
             return jsonify("Error: Invalid input"), 400
+        # Strip any leading or trailing whitespaces in inputs and make them lowercase
+        destination = destination.strip(" ").lower()
+        planned_date = planned_date.strip(" ")
+
+        # Check if the destination already exists in DB
+        wishlist_db = Wishlist.query.filter_by(destination=destination).first()
+        # If destination does NOT exist, add the user's desired destination and planned travel date into DB
+        if not wishlist_db:
+            new_wishlist = Wishlist(
+                destination=destination, planned_date=planned_date)
+            db.session.add(new_wishlist)
+            db.session.commit()
+            return jsonify("Success: New wishlist added!"), 201
     except Exception as e:
         return jsonify(f"Error: Something went wrong when creating a new wishlist - {str(e)}"), 400
 
