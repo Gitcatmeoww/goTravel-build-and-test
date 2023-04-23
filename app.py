@@ -89,6 +89,11 @@ def handle_create_wishlist():
             db.session.add(new_wishlist)
             db.session.commit()
             return jsonify("Success: New wishlist added!"), 201
+        # If destination ALREADY exists, update the corresponding date to the destination into DB
+        else:
+            wishlist_db.planned_date = planned_date
+            db.session.commit()
+            return jsonify("Success: Wishlist updated!"), 201
     except Exception as e:
         return jsonify(f"Error: Something went wrong when creating a new wishlist - {str(e)}"), 400
 

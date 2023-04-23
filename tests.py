@@ -69,6 +69,25 @@ class TestGoTravel(unittest.TestCase):
             self.assertEqual(new_wishlist.planned_date,
                              datetime.date(2023, 5, 1))
 
+    # Test #5: Create an existing wishlist should return a success message with a status code 201
+    def test_create_existing_wishlist(self):
+        with app.app_context():
+            existing_wishlist = Wishlist(
+                destination="berkeley", planned_date=datetime.date(2023, 5, 1))
+            db.session.add(existing_wishlist)
+            db.session.commit()
+
+            response = self.client.post(
+                '/wishlist', data=dict(destination="berkeley", planned_date=datetime.date(2023, 5, 2)))
+            self.assertEqual(response.status_code, 201)
+            self.assertEqual(response.json, "Success: Wishlist updated!")
+
+            updated_wishlist = Wishlist.query.filter_by(
+                destination="berkeley").first()
+            self.assertIsNotNone(updated_wishlist)
+            self.assertEqual(updated_wishlist.planned_date,
+                             datetime.date(2023, 5, 2))
+
 
 if __name__ == "__main__":
     unittest.main()
