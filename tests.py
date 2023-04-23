@@ -48,6 +48,13 @@ class TestGoTravel(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json, [])
 
+    # Test #3: Create an empty wishlist should return an error message with a status code 400
+    def test_create_empty_wishlist(self):
+        response = self.client.post(
+            '/wishlist', data=dict(destination="", planned_date=""))
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json, "Error: Invalid input")
+
 
 if __name__ == "__main__":
     unittest.main()

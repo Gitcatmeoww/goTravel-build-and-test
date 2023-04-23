@@ -69,7 +69,15 @@ def handle_get_all():
 
 
 def handle_create_wishlist():
-    return
+    try:
+        # Get user inputs from front-end form
+        destination = request.form.get('destination')
+        planned_date = request.form.get('planned_date')
+        # Check the validity of user input
+        if destination is None or destination == "" or planned_date is None or planned_date == "":
+            return jsonify("Error: Invalid input"), 400
+    except Exception as e:
+        return jsonify(f"Error: Something went wrong when creating a new wishlist - {str(e)}"), 400
 
 
 def handle_get_single(destination):
