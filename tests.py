@@ -111,6 +111,19 @@ class TestGoTravel(unittest.TestCase):
         response = self.client.get('/wishlist/berkeley')
         self.assertEqual(response.status_code, 204)
 
+    # Test #8: Get a single wishlist should return a json object with a status code 200
+    def test_get_single_wishlist(self):
+        with app.app_context():
+            wishlist = Wishlist(
+                destination="berkeley", planned_date=datetime.date(2023, 5, 1))
+            db.session.add(wishlist)
+            db.session.commit()
+
+            response = self.client.get('/wishlist/berkeley')
+            self.assertEqual(response.status_code, 200)
+            self.assertEqual(response.json, {'destination': 'berkeley', 'id': 1,
+                             'planned_date': 'Mon, 01 May 2023 00:00:00 GMT', 'recommendation': None, 'weather_forecast': None})
+
 
 if __name__ == "__main__":
     unittest.main()
