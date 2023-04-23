@@ -16,12 +16,22 @@ jobs:
     steps:
       - checkout
 
+      - restore-cache
+          keys:
+            - v1-dependencies-{{ checksum "requirements.txt" }}
+            # if cache for exact version of `requirements.txt` is not present then load any most recent one
+            - v1-dependencies-
+
       - run:
           name: Install dependencies
           command: |
             python3 -m venv venv
             . venv/bin/activate
             pip3 install -r requirements.txt
+      
+      - save-cache
+          key: - v1-dependencies-{{ checksum "requirements.txt" }}
+          path: - ./venv
 
       - run:
           name: Set up database
