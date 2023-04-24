@@ -117,6 +117,19 @@ def handle_update_single(destination):
         # Check the validity of user input
         if updated_date is None or updated_date == "":
             return jsonify("Error: Invalid input"), 400
+        # Strip any leading or trailing whitespaces in input
+        updated_date = updated_date.strip(" ")
+
+        # Check if the destination already exists in DB
+        wishlist_db = Wishlist.query.filter_by(destination=destination).first()
+        # If destination ALREADY exists, update the corresponding date to the destination into DB
+        if wishlist_db:
+            wishlist_db.planned_date = updated_date
+            db.session.commit()
+            return jsonify("Success: Wishlist updated!"), 201
+        # If destination does NOT exist, return error
+        else:
+            return jsonify("Error: Wishlist not found!"), 204
     except Exception as e:
         return jsonify(f"Error: Something went wrong when updating a single wishlist - {str(e)}"), 400
 

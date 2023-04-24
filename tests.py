@@ -138,6 +138,20 @@ class TestGoTravel(unittest.TestCase):
             self.assertEqual(response.status_code, 400)
             self.assertEqual(response.json, "Error: Invalid input")
 
+    # Test #10: Update an existing wishlist should return return a success message with a status code 201
+    def test_update_single_wishlist(self):
+        with app.app_context():
+            wishlist = Wishlist(
+                destination="berkeley", planned_date=datetime.date(2023, 5, 1))
+            db.session.add(wishlist)
+            db.session.commit()
+
+            updated_date = "2023-05-02"
+            response = self.client.put(
+                '/wishlist/berkeley', data={'planned_date': updated_date})
+            self.assertEqual(response.status_code, 201)
+            self.assertEqual(response.json, "Success: Wishlist updated!")
+
 
 if __name__ == "__main__":
     unittest.main()
