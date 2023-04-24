@@ -181,6 +181,11 @@ class TestGoTravel(unittest.TestCase):
                 destination="berkeley").first()
             self.assertIsNone(deleted_wishlist)
 
+    # Test #13: Delete an non-existing wishlist should return a status code 204
+    def test_delete_nonexisting_wishlist(self):
+        response = self.client.delete('/wishlist/random_destination')
+        self.assertEqual(response.status_code, 204)
+
 
 if __name__ == "__main__":
     unittest.main()
