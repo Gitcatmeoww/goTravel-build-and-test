@@ -135,7 +135,17 @@ def handle_update_single(destination):
 
 
 def handle_delete_single(destination):
-    return
+    try:
+        wishlist = Wishlist.query.filter_by(
+            destination=destination).first()
+        if wishlist:
+            db.session.delete(wishlist)
+            db.session.commit()
+            return jsonify("Success: Wishlist deleted!"), 200
+        else:
+            return jsonify("Error: Wishlist not found!"), 204
+    except Exception as e:
+        return jsonify(f"Error: Something went wrong when deleting a single wishlist - {str(e)}"), 400
 
 
 @app.route('/wishlist', methods=['GET', 'POST'])

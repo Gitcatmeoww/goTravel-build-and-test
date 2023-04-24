@@ -165,6 +165,22 @@ class TestGoTravel(unittest.TestCase):
             '/wishlist/random_destination', data={'planned_date': updated_date})
         self.assertEqual(response.status_code, 204)
 
+    # Test #12: Delete an existing wishlist should return a success message with a status code 200
+    def test_delete_single_wishlist(self):
+        with app.app_context():
+            wishlist = Wishlist(
+                destination="berkeley", planned_date=datetime.date(2023, 5, 1))
+            db.session.add(wishlist)
+            db.session.commit()
+
+            response = self.client.delete('/wishlist/berkeley')
+            self.assertEqual(response.status_code, 200)
+            self.assertEqual(response.json, "Success: Wishlist deleted!")
+
+            deleted_wishlist = Wishlist.query.filter_by(
+                destination="berkeley").first()
+            self.assertIsNone(deleted_wishlist)
+
 
 if __name__ == "__main__":
     unittest.main()
