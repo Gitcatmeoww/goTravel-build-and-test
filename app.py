@@ -111,7 +111,14 @@ def handle_get_single(destination):
 
 
 def handle_update_single(destination):
-    return
+    try:
+        # Get user updated input from front-end form
+        updated_date = request.form.get('planned_date')
+        # Check the validity of user input
+        if updated_date is None or updated_date == "":
+            return jsonify("Error: Invalid input"), 400
+    except Exception as e:
+        return jsonify(f"Error: Something went wrong when updating a single wishlist - {str(e)}"), 400
 
 
 def handle_delete_single(destination):

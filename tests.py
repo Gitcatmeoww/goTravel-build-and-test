@@ -124,6 +124,20 @@ class TestGoTravel(unittest.TestCase):
             self.assertEqual(response.json, {'destination': 'berkeley', 'id': 1,
                              'planned_date': 'Mon, 01 May 2023 00:00:00 GMT', 'recommendation': None, 'weather_forecast': None})
 
+    # Test #9: Update a single wishlist without providing updated date should return error message with a status code 400
+    def test_update_single_wishlist_invalid_input(self):
+        with app.app_context():
+            wishlist = Wishlist(
+                destination="berkeley", planned_date=datetime.date(2023, 5, 1))
+            db.session.add(wishlist)
+            db.session.commit()
+
+            updated_date = ""
+            response = self.client.put(
+                '/wishlist/berkeley', data={'planned_date': updated_date})
+            self.assertEqual(response.status_code, 400)
+            self.assertEqual(response.json, "Error: Invalid input")
+
 
 if __name__ == "__main__":
     unittest.main()
