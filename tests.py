@@ -158,6 +158,13 @@ class TestGoTravel(unittest.TestCase):
             self.assertEqual(updated_wishlist.planned_date,
                              datetime.date(2023, 5, 2))
 
+    # Test #11: Update an non-existing wishlist should return a status code 204
+    def test_update_nonexisting_wishlist(self):
+        updated_date = "2023-05-02"
+        response = self.client.put(
+            '/wishlist/random_destination', data={'planned_date': updated_date})
+        self.assertEqual(response.status_code, 204)
+
 
 if __name__ == "__main__":
     unittest.main()
